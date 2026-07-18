@@ -1,0 +1,310 @@
+/* css/detail_commande.css */
+
+:root {
+    --primary-color: #1e5631;
+    --primary-hover: #174425;
+    --bg-light: #f4f7f5;
+    --white: #ffffff;
+    --text-dark: #2d3748;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --success: #2f855a;
+    --success-bg: #f0fff4;
+    --warning: #c05621;
+    --warning-bg: #fffaf0;
+    --info-bg: #ebf8ff;
+    --info-color: #2b6cb0;
+}
+
+.detail-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+}
+
+.back-bar {
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.btn-back:hover {
+    color: var(--primary-hover);
+}
+
+/* Grille de détail à 2 colonnes */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+/* Cartes communes */
+.card {
+    background-color: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+}
+
+.order-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Tableau des produits */
+.products-list {
+    padding: 25px;
+}
+
+.products-list h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.detail-products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.detail-products-table th {
+    background-color: #f7fafc;
+    padding: 12px 15px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.detail-products-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.bold-text {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Section Totaux */
+.detail-totals {
+    max-width: 400px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.total-row.grand-total {
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    margin-top: 5px;
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+.total-highlight {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+
+/* Fiche Certificat ONAPAC */
+.card-body {
+    padding: 25px;
+}
+
+.cert-approved-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--success-bg);
+    border: 1px solid #c6f6d5;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.approved-icon {
+    font-size: 2.5rem;
+    color: var(--success);
+}
+
+.cert-approved-box h4 {
+    margin: 0 0 5px 0;
+    color: var(--success);
+}
+
+.cert-num, .cert-date {
+    margin: 2px 0;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.analysis-quote {
+    margin: 10px 0 0 0;
+    padding: 15px;
+    background-color: #f7fafc;
+    border-left: 4px solid var(--primary-color);
+    color: #4a5568;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Analyse en cours */
+.cert-pending-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--warning-bg);
+    border: 1px solid #feebc8;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.pending-icon {
+    font-size: 2.5rem;
+    color: var(--warning);
+}
+
+.cert-pending-box h4 {
+    margin: 0 0 5px 0;
+    color: #9c4221;
+}
+
+.cert-pending-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #7b341e;
+    line-height: 1.4;
+}
+
+/* Blocs d'expédition (colonne secondaire) */
+.shipping-card h3,
+.payment-card h3 {
+    margin: 0;
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shipping-info-box,
+.payment-info-box {
+    padding: 25px;
+}
+
+.shipping-status-label {
+    margin: 0 0 8px 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.card-divider {
+    border: 0;
+    height: 1px;
+    background: var(--border-color);
+    margin: 20px 0;
+}
+
+.address-text {
+    background-color: #f7fafc;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    line-height: 1.4;
+}
+
+.tracking-number {
+    font-family: monospace;
+    font-size: 1rem;
+    background-color: #edf2f7;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* Boutons de téléchargements */
+.btn-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    box-sizing: border-box;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+.btn-pdf-large {
+    background-color: #e53e3e;
+    color: var(--white);
+}
+
+.btn-pdf-large:hover {
+    background-color: #c53030;
+}
+
+.text-green { color: var(--success); }
+.text-orange { color: var(--warning); }
+
+/* Badges logistiques */
+.lvr-en-préparation { background-color: var(--warning-bg); color: var(--warning); }
+.lvr-expédié { background-color: var(--info-bg); color: var(--info-color); }
+.lvr-livré { background-color: var(--success-bg); color: var(--success); }
+
+@media (max-width: 992px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}

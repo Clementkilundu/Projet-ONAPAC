@@ -1,0 +1,312 @@
+/* css/dashboard_acheteur.css */
+
+:root {
+    --primary-color: #1e5631;
+    --primary-hover: #174425;
+    --bg-light: #f4f7f5;
+    --white: #ffffff;
+    --text-dark: #2d3748;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --success: #2f855a;
+    --success-bg: #f0fff4;
+    --warning: #c05621;
+    --warning-bg: #fffaf0;
+    --info: #2b6cb0;
+    --info-bg: #ebf8ff;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: calc(100vh - 80px); /* Ajusté selon la hauteur de ton header */
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar de navigation */
+.dashboard-sidebar {
+    width: 280px;
+    background-color: var(--white);
+    border-right: 1px solid var(--border-color);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile-card {
+    text-align: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 25px;
+}
+
+.avatar-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.user-profile-card h3 {
+    margin: 5px 0;
+    color: var(--text-dark);
+    font-size: 1.15rem;
+}
+
+.company-tag {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 3px 0;
+}
+
+.rccm-tag {
+    display: inline-block;
+    background-color: #edf2f7;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--text-dark);
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background-color: #ebf5ee;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.sidebar-menu a.logout-btn {
+    margin-top: auto;
+    color: #e53e3e;
+}
+
+.sidebar-menu a.logout-btn:hover {
+    background-color: #fff5f5;
+}
+
+/* Contenu Principal */
+.dashboard-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.welcome-header h2 {
+    color: var(--primary-color);
+    margin: 0 0 8px 0;
+    font-size: 1.8rem;
+}
+
+.welcome-header p {
+    color: var(--text-muted);
+    margin: 0 0 30px 0;
+}
+
+/* Grille de Statistiques */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: var(--white);
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-card i {
+    font-size: 2.2rem;
+}
+
+.text-green { color: var(--primary-color); }
+.text-orange { color: #dd6b20; }
+.text-blue { color: var(--info); }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Section Liste de commandes */
+.orders-section {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.section-title-bar {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-title-bar h3 {
+    margin: 0;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.orders-table th {
+    background-color: #f7fafc;
+    padding: 15px 25px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.orders-table td {
+    padding: 18px 25px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.price-cell {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Badges de statuts */
+.badge-status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Statuts Commande */
+.cmd-payée, .cmd-validée { background-color: var(--success-bg); color: var(--success); }
+.cmd-en-attente { background-color: var(--warning-bg); color: var(--warning); }
+
+/* Statuts Paiement */
+.pay-validé, .pay-confirmé { background-color: var(--success-bg); color: var(--success); }
+.pay-en-attente-de-vérification, .pay-en-attente { background-color: var(--warning-bg); color: var(--warning); }
+.pay-non-initié { background-color: #edf2f7; color: var(--text-muted); }
+
+/* Boutons d'action miniatures */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-view {
+    background-color: #edf2f7;
+    color: var(--text-dark);
+}
+
+.btn-view:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-pdf {
+    background-color: #fff5f5;
+    color: #c53030;
+    border: 1px solid #fed7d7;
+}
+
+.btn-pdf:hover {
+    background-color: #fed7d7;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.btn-primary-fob {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .dashboard-sidebar {
+        width: 100%;
+        box-sizing: border-box;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .dashboard-content {
+        padding: 20px;
+    }
+}

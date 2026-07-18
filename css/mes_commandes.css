@@ -1,0 +1,198 @@
+/* css/mes_commandes.css */
+
+.orders-container {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.orders-header {
+    margin-bottom: 35px;
+}
+
+.orders-header h1 {
+    color: #1e5631;
+    font-size: 2rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.orders-header p {
+    color: #666;
+    margin: 0;
+}
+
+/* Cas vide */
+.empty-orders-box {
+    text-align: center;
+    padding: 60px 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8e4;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.empty-orders-box h2 {
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.empty-orders-box p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.btn-browse-products {
+    background-color: #1e5631;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 28px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.btn-browse-products:hover {
+    background-color: #ffd700;
+    color: #1e5631;
+}
+
+/* Tableau Responsive */
+.orders-table-wrapper {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8e4;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    overflow-x: auto;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.orders-table th, .orders-table td {
+    padding: 18px 20px;
+    border-bottom: 1.5px solid #e2e8e4;
+    font-size: 0.95rem;
+}
+
+.orders-table th {
+    background-color: #f4f6f5;
+    color: #333;
+    font-weight: 700;
+}
+
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Éléments de ligne */
+.order-ref {
+    color: #1e5631;
+    font-size: 1rem;
+}
+
+.order-date {
+    color: #555;
+}
+
+.order-total {
+    font-weight: bold;
+    color: #222;
+}
+
+/* Badges de Statut */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.badge i {
+    font-size: 0.55rem;
+}
+
+/* Statuts de couleurs */
+.status-pending {
+    background-color: #fef5e6;
+    color: #d97706; /* Orange */
+}
+
+.status-success {
+    background-color: #eaf2ed;
+    color: #1e5631; /* Vert ONAPAC */
+}
+
+.status-info {
+    background-color: #e0f2fe;
+    color: #0369a1; /* Bleu */
+}
+
+.status-danger {
+    background-color: #fdf2f2;
+    color: #df4747; /* Rouge */
+}
+
+/* Boutons d'action */
+.text-center {
+    text-align: center;
+}
+
+.action-buttons {
+    display: inline-flex;
+    gap: 10px;
+}
+
+.btn-action-view, .btn-action-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-action-view {
+    background-color: #f4f6f5;
+    color: #555;
+    border: 1px solid #cccccc;
+}
+
+.btn-action-view:hover {
+    background-color: #e2e8e4;
+    color: #222;
+}
+
+.btn-action-pdf {
+    background-color: #fdf2f2;
+    color: #df4747;
+    border: 1px solid #f8b4b4;
+}
+
+.btn-action-pdf:hover {
+    background-color: #df4747;
+    color: #ffffff;
+}
+
+/* Ralentir la rotation de l'icône de chargement */
+.fa-spin-slow {
+    animation: fa-spin 3s infinite linear;
+}

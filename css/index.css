@@ -1,0 +1,480 @@
+/* css/index.css */
+
+/* --- CORRECTIF ESPACE BLANC --- 
+   On s'assure qu'aucun élément parent n'injecte de marge parasite entre le header et le carrousel 
+*/
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.site-container {
+    padding-bottom: 0 !important; /* On annule le padding bas par défaut pour contrôler le layout */
+}
+
+/* --- CARROUSEL --- */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background-color: #000;
+    margin-top: 0; /* Colle parfaitement au header */
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.carousel-content {
+    max-width: 600px;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transform: translateY(20px);
+    transition: transform 0.8s ease;
+}
+
+.carousel-slide.active .carousel-content {
+    transform: translateY(0);
+}
+
+.carousel-badge {
+    background-color: #ffd700;
+    color: #1e5631;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.carousel-content h2 {
+    font-size: 2.8rem;
+    margin: 0 0 15px 0;
+    font-weight: 800;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.carousel-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.btn-carousel {
+    display: inline-block;
+    background-color: #1e5631;
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, transform 0.2s;
+    border: 2px solid #1e5631;
+}
+
+.btn-carousel:hover {
+    background-color: #153e22;
+    transform: translateY(-2px);
+}
+
+.btn-carousel.btn-secondary {
+    background-color: transparent;
+    border-color: #ffffff;
+}
+
+.btn-carousel.btn-secondary:hover {
+    background-color: #ffffff;
+    color: #1e5631;
+}
+
+/* Flèches de navigation */
+.carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.2rem;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-prev:hover, .carousel-next:hover {
+    background-color: #1e5631;
+}
+
+.carousel-prev { left: 20px; }
+.carousel-next { right: 20px; }
+
+/* Indicateurs (Dots) */
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dot.active {
+    background-color: #ffd700;
+}
+
+/* --- SECTION ENGAGEMENTS / AVANTAGES --- */
+.benefits-section {
+    padding: 60px 5%;
+    background-color: #ffffff;
+}
+
+.benefits-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.benefit-card {
+    background: #fafafa;
+    padding: 30px;
+    border-radius: 8px;
+    border-bottom: 3px solid #e2e8e4;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-3px);
+    border-color: #1e5631;
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    color: #1e5631;
+    margin-bottom: 20px;
+}
+
+.benefit-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.25rem;
+    color: #222;
+}
+
+.benefit-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* --- SECTION STATISTIQUES --- */
+.stats-section {
+    background-color: #1e5631;
+    color: #ffffff;
+    padding: 50px 5%;
+}
+
+.stats-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 10px;
+}
+
+.stat-card i {
+    font-size: 2.5rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+.stat-card h3 {
+    font-size: 2.2rem;
+    margin: 0 0 5px 0;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.stat-card p {
+    margin: 0;
+    color: #e2e8e4;
+    font-size: 1rem;
+}
+
+/* --- SECTION PRODUITS PHARES --- */
+.featured-section {
+    padding: 70px 5%;
+    background-color: #f4f6f5;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    color: #1e5631;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.section-header p {
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1rem;
+}
+
+.products-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.product-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.product-card:hover .product-card-img {
+    transform: scale(1.05);
+}
+
+.card-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #1e5631;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.card-body {
+    padding: 20px 25px;
+}
+
+.product-title {
+    font-size: 1.25rem;
+    color: #222;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.product-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 12px;
+}
+
+.product-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-desc {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.card-footer {
+    background-color: #fafafa;
+    padding: 15px 25px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e5631;
+}
+
+.unit {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.btn-view {
+    background-color: #1e5631;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-view:hover {
+    background-color: #153e22;
+}
+
+.view-all-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1e5631;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.btn-all:hover {
+    color: #ffd700;
+}
+
+/* --- SECTION COMMENT ÇA MARCHE --- */
+.how-it-works {
+    padding: 70px 5%;
+    background-color: #ffffff;
+}
+
+.steps-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.step-card {
+    text-align: center;
+    position: relative;
+    padding: 20px;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #eaf2ed;
+    color: #1e5631;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    border: 2px solid #1e5631;
+}
+
+.step-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #222;
+}
+
+.step-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .carousel-content h2 {
+        font-size: 2rem;
+    }
+}
