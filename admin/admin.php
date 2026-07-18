@@ -611,7 +611,13 @@ try {
                                             <small style="font-size:0.75rem; font-family:monospace;">Suivi: <?php echo htmlspecialchars($com['numero_suivi'] ?? 'Aucun'); ?></small>
                                         </td>
                                         <td style="text-align: center;">
+                                            <!-- Bouton Modifier -->
                                             <a href="modifier_commande.php?id=<?php echo $com['id_commande']; ?>" class="btn-action edit" style="background:#f57c00; color:#fff; padding:6px 10px; border-radius:4px;" title="Mettre à jour les statuts logistiques"><i class="fa-solid fa-truck-ramp-box"></i></a>
+                                            
+                                            <!-- AJOUT DU BOUTON IMPRIMER BON DE LIVRAISON -->
+                                            <a href="generer_bon_livraison.php?id=<?php echo $com['id_commande']; ?>" target="_blank" class="btn-action print" style="background:#0288d1; color:#fff; padding:6px 10px; border-radius:4px; margin: 0 2px;" title="Imprimer le Bon de Livraison"><i class="fa-solid fa-print"></i></a>
+                                            
+                                            <!-- Bouton Supprimer -->
                                             <a href="supprimer_commande.php?id=<?php echo $com['id_commande']; ?>" class="btn-action delete" style="background:#dc3545; color:#fff; padding:6px 10px; border-radius:4px;" title="Supprimer la commande" onclick="return confirm('Supprimer cette commande ?');"><i class="fa-solid fa-trash"></i></a>
                                             
                                             <div class="details-box" style="text-align: left; max-width: 250px; margin: 5px auto 0 auto;">
