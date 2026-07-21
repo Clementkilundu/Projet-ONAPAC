@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2026 at 05:24 PM
+-- Generation Time: Jul 21, 2026 at 11:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,9 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id_categorie`, `nom_categorie`, `description`) VALUES
 (1, 'Café', 'Café Arabica et Robusta certifiés.'),
 (2, 'Cacao', 'Fèves de cacao prêtes pour l\'exportation.'),
-(3, 'Plantes à Parfum', 'Produits de spécialité (Quinquina, Papaye, etc.).');
+(3, 'Plantes à Parfum', 'Produits de spécialité (Quinquina, Papaye, etc.).'),
+(4, 'plante médecinale', NULL),
+(5, 'thé', NULL);
 
 -- --------------------------------------------------------
 
@@ -79,7 +81,9 @@ CREATE TABLE `commandes` (
 
 INSERT INTO `commandes` (`id_commande`, `reference_commande`, `date_commande`, `montant_total_usd`, `statut_commande`, `id_acheteur`) VALUES
 (6, 'CMD-20260714-5760', '2026-07-14 15:07:17', 9.09, 'Validée', 5),
-(7, 'CMD-20260714-9499', '2026-07-14 16:08:04', 5.25, 'Validée', 4);
+(7, 'CMD-20260714-9499', '2026-07-14 16:08:04', 5.25, 'Validée', 4),
+(8, 'CMD-20260720-8705', '2026-07-20 16:36:41', 9.09, 'En attente', 4),
+(9, 'CMD-20260721-7702', '2026-07-21 07:25:06', 979.70, 'Livrée', 6);
 
 -- --------------------------------------------------------
 
@@ -101,7 +105,10 @@ CREATE TABLE `lignes_commande` (
 
 INSERT INTO `lignes_commande` (`id_ligne`, `id_commande`, `id_produit`, `quantite_commandee`, `prix_applique_usd`) VALUES
 (8, 6, 1, 2.00, 4.50),
-(9, 7, 2, 1.00, 5.20);
+(9, 7, 2, 1.00, 5.20),
+(10, 8, 1, 2.00, 4.50),
+(11, 9, 1, 100.00, 4.50),
+(12, 9, 2, 100.00, 5.20);
 
 -- --------------------------------------------------------
 
@@ -125,8 +132,10 @@ CREATE TABLE `livraisons` (
 --
 
 INSERT INTO `livraisons` (`id_livraison`, `id_commande`, `adresse_livraison`, `societe_transport`, `numero_suivi`, `statut_livraison`, `date_expedition`, `date_livraison_effective`) VALUES
-(6, 6, 'Port de bukavu, Bukavu - RDC', NULL, 'N-SUIVI-123', 'En transit', NULL, NULL),
-(7, 7, 'Port de kalundu, Uvira - RDC', NULL, '', 'Livrée', NULL, NULL);
+(6, 6, 'Port de bukavu, Bukavu - RDC', NULL, 'N-SUIVI-123', 'Livrée', NULL, NULL),
+(7, 7, 'Port de kalundu, Uvira - RDC', NULL, '', 'Livrée', NULL, NULL),
+(8, 8, 'GOMA, GOMA - RDC', NULL, NULL, 'En préparation', NULL, NULL),
+(9, 9, 'Maison dada chez baba chingazi, Bukavu - RDC', NULL, 'N-SUIVI-124', 'Livrée', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -149,8 +158,7 @@ CREATE TABLE `messages_contact` (
 --
 
 INSERT INTO `messages_contact` (`id_message`, `nom_expediteur`, `email_expediteur`, `sujet`, `message`, `date_envoi`, `est_lu`) VALUES
-(1, 'Coopérative Virunga', 'contact@virungacoffee.org', 'Demande de partenariat', 'Bonjour, nous souhaiterions savoir si vos services couvrent l\'exportation vers l\'Europe via cette plateforme.', '2026-07-08 17:30:04', 0),
-(2, 'John kakusu', 'johnshekinah@gmail.com', 'Technique', 'comment commander sur votre plateforme ?', '2026-07-14 15:58:28', 0);
+(3, 'baraka Farijika', 'barakakabagaya52@gmail.com', 'Partenariat', 'Bonjour, commentr je peux reconnu comme exportateur ?', '2026-07-21 08:06:48', 0);
 
 -- --------------------------------------------------------
 
@@ -174,7 +182,9 @@ CREATE TABLE `paiements` (
 
 INSERT INTO `paiements` (`id_paiement`, `reference_transaction`, `mode_paiement`, `montant_paye_usd`, `date_paiement`, `statut_paiement`, `id_commande`) VALUES
 (6, 'CMD-20260714-5760', 'Mobile Money', 9.09, '2026-07-14 15:08:38', 'Confirmé', 6),
-(7, 'CMD-20260714-9499', 'Mobile Money', 5.25, '2026-07-14 16:10:24', 'Confirmé', 7);
+(7, 'CMD-20260714-9499', 'Mobile Money', 5.25, '2026-07-14 16:10:24', 'Confirmé', 7),
+(8, 'CMD-20260720-8705', 'Mobile Money', 9.09, '2026-07-20 16:36:41', 'En attente de vérification', 8),
+(9, 'CMD-20260721-7702', 'Mobile Money', 979.70, '2026-07-21 07:34:10', 'Confirmé', 9);
 
 -- --------------------------------------------------------
 
@@ -195,7 +205,7 @@ CREATE TABLE `paniers` (
 --
 
 INSERT INTO `paniers` (`id_panier`, `id_utilisateur`, `id_produit`, `quantite`, `date_ajout`) VALUES
-(7, 4, 2, 1.00, '2026-07-15 08:16:02');
+(11, 1, 2, 2.00, '2026-07-21 08:59:34');
 
 -- --------------------------------------------------------
 
@@ -213,16 +223,19 @@ CREATE TABLE `produits` (
   `grade_qualite` varchar(50) DEFAULT NULL,
   `origine_provenance` varchar(100) DEFAULT NULL,
   `id_categorie` int(11) NOT NULL,
-  `date_enregistrement` timestamp NOT NULL DEFAULT current_timestamp()
+  `date_enregistrement` timestamp NOT NULL DEFAULT current_timestamp(),
+  `img_url` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `produits`
 --
 
-INSERT INTO `produits` (`id_produit`, `nom_produit`, `description`, `prix_unitaire_usd`, `unite_mesure`, `stock_disponible`, `grade_qualite`, `origine_provenance`, `id_categorie`, `date_enregistrement`) VALUES
-(1, 'Café Arabica Kivu K3', 'Café lavé de haute altitude.', 4.50, 'Kg', 24996.00, 'K3 Standard', 'Nord-Kivu (Beni)', 1, '2026-07-08 17:30:04'),
-(2, 'Fèves de Cacao Fermentées', 'Qualité supérieure séchée au soleil.', 5.20, 'Kg', 14996.00, 'Premium', 'Ituri (Mambasa)', 2, '2026-07-08 17:30:04');
+INSERT INTO `produits` (`id_produit`, `nom_produit`, `description`, `prix_unitaire_usd`, `unite_mesure`, `stock_disponible`, `grade_qualite`, `origine_provenance`, `id_categorie`, `date_enregistrement`, `img_url`) VALUES
+(1, 'Café Arabica Kivu K3', 'Café lavé de haute altitude.', 4.50, 'Kg', 24894.00, 'K3 Standard', 'Nord-Kivu (Beni)', 1, '2026-07-08 17:30:04', 'uploads/1784625405_6a5f38fd185d8.jpg'),
+(2, 'Fèves de Cacao Fermentées', 'Qualité supérieure séchée au soleil.', 5.20, 'Kg', 14896.00, 'Premium', 'Ituri (Mambasa)', 2, '2026-07-08 17:30:04', 'uploads/1784623566_6a5f31ce69a66.jpg'),
+(3, 'Café Robusta', 'un café bon pour la santé', 8.00, 'Kg', 1000.00, 'uploads/1784620994_6a5f27c297e0a.jpg', 'kalehe/sud-Kivu', 1, '2026-07-21 08:00:21', 'uploads/1784623231_6a5f307f463f4.webp'),
+(4, 'thé kivu cahi', 'un thé pas comme les autres', 5.00, 'Kg', 1000.00, 'Grade A', 'mwenga / sud-kivu', 5, '2026-07-21 09:22:10', 'uploads/1784625730_6a5f3a42d8873.png');
 
 -- --------------------------------------------------------
 
@@ -289,7 +302,8 @@ INSERT INTO `utilisateurs` (`id_utilisateur`, `nom`, `prenom`, `email`, `mot_de_
 (2, 'Mbuyi', 'Sarah', 's.mbuyi@onapac.cd', 'AgentHash2026', '+243990000002', 'ONAPAC', NULL, 2, '2026-07-08 17:30:04'),
 (3, 'Smith', 'John', 'j.smith@kivuexport.com', 'ClientHash2026', '+243820000003', 'Kivu Coffee Export SRL', 'CD/BKV/RCCM/26-B-0450', 3, '2026-07-08 17:30:04'),
 (4, 'kilundu', 'clement', 'kilunduclement@gmail.com', '$2y$10$Fh.AAxeWsd.W34AMCNoDOuXR5SvqymRxe6fIjl1jW.F6kv1aSvtVK', '+243995802729', 'Bantu code', 'CD/BKV/RCCM/26-B-0450', 3, '2026-07-14 12:56:12'),
-(5, 'kakusu', 'John', 'johnshekinah@gmail.com', '$2y$10$.DjLmCPViFGteJhk6lk10.6fJFkX//p1kmMCs6pBY4isxF3SmXeFy', '+243995802728', 'INERA-MULUNGU', 'CD/BKV/RCCM/28-B-0420', 3, '2026-07-14 14:51:07');
+(5, 'kakusu', 'John', 'johnshekinah@gmail.com', '$2y$10$.DjLmCPViFGteJhk6lk10.6fJFkX//p1kmMCs6pBY4isxF3SmXeFy', '+243995802728', 'INERA-MULUNGU', 'CD/BKV/RCCM/28-B-0420', 3, '2026-07-14 14:51:07'),
+(6, 'Farijika', 'baraka', 'barakakabagaya52@gmail.com', '$2y$10$KVoEPklt8uJtBCjXIntIUeWt0X7jzs7zKaI0V67yXPkFjdekrUt5W', '+243974772103', 'Baraka food', 'CD/BKV/RCCM/30-C-0530', 3, '2026-07-21 07:10:01');
 
 --
 -- Indexes for dumped tables
@@ -393,7 +407,7 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id_categorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_categorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `certificats_qualite`
@@ -405,43 +419,43 @@ ALTER TABLE `certificats_qualite`
 -- AUTO_INCREMENT for table `commandes`
 --
 ALTER TABLE `commandes`
-  MODIFY `id_commande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_commande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `lignes_commande`
 --
 ALTER TABLE `lignes_commande`
-  MODIFY `id_ligne` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_ligne` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `livraisons`
 --
 ALTER TABLE `livraisons`
-  MODIFY `id_livraison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_livraison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `messages_contact`
 --
 ALTER TABLE `messages_contact`
-  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `paiements`
 --
 ALTER TABLE `paiements`
-  MODIFY `id_paiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_paiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `paniers`
 --
 ALTER TABLE `paniers`
-  MODIFY `id_panier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_panier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `produits`
 --
 ALTER TABLE `produits`
-  MODIFY `id_produit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_produit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -459,7 +473,7 @@ ALTER TABLE `tokens_authentification`
 -- AUTO_INCREMENT for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
