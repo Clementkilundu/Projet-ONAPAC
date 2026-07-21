@@ -56,19 +56,34 @@ try {
             </div>
         <?php else: ?>
             <?php foreach ($produits as $prod): 
-                // Assignation d'images selon la catégorie
-                $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80'; // Par défaut : Café
                 $cat_clean = strtolower($prod['nom_categorie']);
-                if ($cat_clean === 'cacao') {
-                    $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80';
-                } elseif ($cat_clean === 'pyrethe' || $cat_clean === 'plantes à parfum') {
-                    $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=600&q=80';
+
+                // 1. Reconstitution du chemin d'accès relatif depuis la racine
+                $raw_path = $prod['img_url'] ?? '';
+                
+                if (!empty($raw_path) && strpos($raw_path, 'admin/') !== 0) {
+                    $real_path = 'admin/' . $raw_path;
+                } else {
+                    $real_path = $raw_path;
+                }
+
+                // 2. Vérification de l'existence du fichier physique sur le serveur
+                if (!empty($real_path) && file_exists($real_path)) {
+                    $image_url = htmlspecialchars($real_path);
+                } else {
+                    // Image Unsplash de secours si le fichier n'existe pas
+                    $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80'; // Café par défaut
+                    if ($cat_clean === 'cacao') {
+                        $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=600&q=80';
+                    } elseif (in_array($cat_clean, ['pyrethe', 'plantes à parfum', 'épices'])) {
+                        $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=600&q=80';
+                    }
                 }
             ?>
                 <!-- Carte Produit avec attributs data pour le filtrage en JS -->
                 <div class="product-card" data-category="<?php echo htmlspecialchars($cat_clean); ?>" data-name="<?php echo htmlspecialchars(strtolower($prod['nom_produit'])); ?>" data-origin="<?php echo htmlspecialchars(strtolower($prod['origine_provenance'])); ?>">
                     <div class="product-image-container">
-                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($prod['nom_produit']); ?>" class="product-card-img">
+                        <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($prod['nom_produit']); ?>" class="product-card-img" style="object-fit: cover; width: 100%; height: 200px;">
                         <div class="card-badge"><?php echo htmlspecialchars($prod['nom_categorie']); ?></div>
                     </div>
                     
@@ -77,7 +92,7 @@ try {
                         
                         <div class="product-meta">
                             <span><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($prod['origine_provenance']); ?></span>
-                            <span><i class="fa-solid fa-award"></i> Grade: <?php echo htmlspecialchars($prod['grade_qualite'] ?? 'Non défini'); ?></span>
+                            <span><i class="fa-solid fa-award"></i> Grade: <?php echo htmlspecialchars(($prod['grade_qualite'] && strpos($prod['grade_qualite'], 'uploads/') === false) ? $prod['grade_qualite'] : 'Non défini'); ?></span>
                         </div>
                         
                         <p class="product-desc">

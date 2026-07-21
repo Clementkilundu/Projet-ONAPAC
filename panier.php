@@ -14,10 +14,10 @@ if (!isset($_SESSION['user_id'])) {
 $id_utilisateur = $_SESSION['user_id'];
 
 try {
-    // Récupérer les produits dans le panier de l'utilisateur avec les infos produit et catégorie
+    // Récupérer les produits dans le panier de l'utilisateur avec les infos produit, catégorie et l'URL de l'image
     $stmt = $pdo->prepare("SELECT p.id_panier, p.quantite, prod.id_produit, prod.nom_produit, 
                                   prod.prix_unitaire_usd, prod.unite_mesure, prod.stock_disponible, 
-                                  prod.origine_provenance, cat.nom_categorie
+                                  prod.origine_provenance, prod.img_url, cat.nom_categorie
                            FROM paniers p
                            INNER JOIN produits prod ON p.id_produit = prod.id_produit
                            INNER JOIN categories cat ON prod.id_categorie = cat.id_categorie
@@ -67,18 +67,32 @@ try {
                     $total_item = $item['prix_unitaire_usd'] * $item['quantite'];
                     $sous_total += $total_item;
 
-                    // Image de catégorie
-                    $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=300&q=80'; // Café par défaut
-                    $cat_clean = strtolower($item['nom_categorie']);
-                    if ($cat_clean === 'cacao') {
-                        $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=300&q=80';
-                    } elseif ($cat_clean === 'pyrethe' || $cat_clean === 'plantes à parfum') {
-                        $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=300&q=80';
+                    // 1. Reconstitution du chemin d'accès relatif depuis la racine
+                    $raw_path = $item['img_url'] ?? '';
+                    
+                    if (!empty($raw_path) && strpos($raw_path, 'admin/') !== 0) {
+                        $real_path = 'admin/' . $raw_path;
+                    } else {
+                        $real_path = $raw_path;
+                    }
+
+                    // 2. Vérification de l'existence du fichier physique sur le serveur
+                    if (!empty($real_path) && file_exists($real_path)) {
+                        $image_url = htmlspecialchars($real_path);
+                    } else {
+                        // Image Unsplash de secours si le fichier n'existe pas
+                        $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=300&q=80'; // Café
+                        $cat_clean = strtolower($item['nom_categorie']);
+                        if ($cat_clean === 'cacao') {
+                            $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=300&q=80';
+                        } elseif (in_array($cat_clean, ['pyrethe', 'plantes à parfum', 'épices'])) {
+                            $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=300&q=80';
+                        }
                     }
                 ?>
                     <div class="cart-item-card" data-id-panier="<?php echo $item['id_panier']; ?>">
                         <div class="item-img-wrapper">
-                            <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($item['nom_produit']); ?>">
+                            <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($item['nom_produit']); ?>" style="object-fit: cover; width: 100%; height: 100%;">
                         </div>
 
                         <div class="item-details">
@@ -139,7 +153,7 @@ try {
                     </div>
                     
                     <div class="summary-row">
-                        <span>Frais d'analyse ONAPAC (Fictif - 1%) :</span>
+                        <span>Frais d'analyse ONAPAC (1%) :</span>
                         <span class="fee-val"><?php echo number_format($sous_total * 0.01, 2); ?> $</span>
                     </div>
 

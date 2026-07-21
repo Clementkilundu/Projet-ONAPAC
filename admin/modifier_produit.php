@@ -24,7 +24,7 @@ try {
     }
 
     // Récupération dynamique de la liste des catégories pour le menu déroulant
-    $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
+    $categories = $pdo->query("SELECT * FROM categories ORDER BY id_categorie ASC")->fetchAll();
 
 } catch (PDOException $e) {
     die("Erreur de chargement des données SQL : " . $e->getMessage());
@@ -37,20 +37,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $origine_provenance = htmlspecialchars(trim($_POST['origine']));
     $prix_unitaire_usd  = floatval($_POST['prix']);
     $description        = htmlspecialchars(trim($_POST['description']));
+    $grade_qualite      = isset($_POST['grade']) ? htmlspecialchars(trim($_POST['grade'])) : ($produit['grade_qualite'] ?? 'Grade A');
     
-    // Par défaut, on conserve l'ancien chemin d'image stocké dans la base
-    $target_path        = $produit['grade_qualite']; 
+    // Par défaut, on conserve l'ancien chemin d'image stocké dans img_url
+    $target_path        = !empty($produit['img_url']) ? $produit['img_url'] : "uploads/default.png"; 
 
     // Gestion du nouveau téléversement d'image (si un nouveau fichier est sélectionné)
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         $upload_dir = 'uploads/';
-        $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $image_name = time() . '_' . uniqid() . '.' . $file_extension;
-        $new_path = $upload_dir . $image_name;
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
 
-        if (in_array(strtolower($file_extension), ['jpg', 'jpeg', 'png', 'webp'])) {
+        $file_extension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+        if (in_array($file_extension, $allowed_extensions)) {
+            $image_name = time() . '_' . uniqid() . '.' . $file_extension;
+            $new_path = $upload_dir . $image_name;
+
             if (move_uploaded_file($_FILES['image']['tmp_name'], $new_path)) {
-                // Nettoyage : On supprime l'ancienne image du serveur pour économiser l'espace disque
+                // Nettoyage : On supprime l'ancienne image du serveur si elle existe et n'est pas celle par défaut
                 if (file_exists($target_path) && $target_path !== "uploads/default.png") {
                     unlink($target_path);
                 }
@@ -60,14 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // 4. Exécution de la requête SQL UPDATE
+        // 4. Exécution de la requête SQL UPDATE avec le champ img_url
         $sql = "UPDATE produits SET 
                     nom_produit = :nom, 
                     description = :desc, 
                     prix_unitaire_usd = :prix, 
-                    grade_qualite = :img, 
+                    grade_qualite = :grade, 
                     origine_provenance = :origine, 
-                    id_categorie = :cat 
+                    id_categorie = :cat,
+                    img_url = :img_url
                 WHERE id_produit = :id";
         
         $stmtUpdate = $pdo->prepare($sql);
@@ -75,9 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':nom'     => $nom_produit,
             ':desc'    => $description,
             ':prix'    => $prix_unitaire_usd,
-            ':img'     => $target_path, // Stockage du chemin mis à jour
+            ':grade'   => $grade_qualite,
             ':origine' => $origine_provenance,
             ':cat'     => $id_categorie,
+            ':img_url' => $target_path,
             ':id'      => $id_produit
         ]);
 
@@ -138,8 +147,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="number" step="0.01" name="prix" value="<?php echo htmlspecialchars($produit['prix_unitaire_usd']); ?>" required style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px; margin-top:6px; font-size:1rem;">
                 </div>
                 <div class="input-group">
-                    <label style="font-weight: 600; color: #333;">Remplacer le document visuel (Optionnel)</label>
+                    <label style="font-weight: 600; color: #333;">Remplacer l'image (Optionnel)</label>
                     <input type="file" name="image" accept="image/*" style="width:100%; padding:9px; border:1px solid #ccc; border-radius:5px; margin-top:6px; font-size:0.95rem; background:#f9f9f9;">
+                    <?php if (!empty($produit['img_url']) && file_exists($produit['img_url'])): ?>
+                        <div style="margin-top: 8px; font-size: 0.85rem; color: #666; display: flex; align-items: center; gap: 8px;">
+                            <span>Aperçu actuel :</span>
+                            <img src="<?php echo htmlspecialchars($produit['img_url']); ?>" alt="Aperçu" style="height: 35px; width: 35px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

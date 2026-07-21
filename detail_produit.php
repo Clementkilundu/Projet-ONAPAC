@@ -25,13 +25,28 @@ try {
         die("<div class='container' style='padding: 50px 0; text-align: center;'><h2>Le lot agricole demandé est introuvable.</h2><a href='produits.php' class='btn-view'>Retour au catalogue</a></div>");
     }
 
-    // Association d'image selon la catégorie pour la cohérence visuelle
-    $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80'; // Café par défaut
     $cat_clean = strtolower($produit['nom_categorie']);
-    if ($cat_clean === 'cacao') {
-        $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=800&q=80';
-    } elseif ($cat_clean === 'pyrethe' || $cat_clean === 'plantes à parfum') {
-        $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=800&q=80';
+
+    // 3. Reconstitution du chemin d'accès relatif depuis la racine
+    $raw_path = $produit['img_url'] ?? '';
+    
+    if (!empty($raw_path) && strpos($raw_path, 'admin/') !== 0) {
+        $real_path = 'admin/' . $raw_path;
+    } else {
+        $real_path = $raw_path;
+    }
+
+    // 4. Vérification de l'existence du fichier physique sur le serveur
+    if (!empty($real_path) && file_exists($real_path)) {
+        $image_url = htmlspecialchars($real_path);
+    } else {
+        // Image Unsplash de secours si le fichier n'existe pas
+        $image_url = 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80'; // Café par défaut
+        if ($cat_clean === 'cacao') {
+            $image_url = 'https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=800&q=80';
+        } elseif (in_array($cat_clean, ['pyrethe', 'plantes à parfum', 'épices'])) {
+            $image_url = 'https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=800&q=80';
+        }
     }
 
 } catch (PDOException $e) {
@@ -54,7 +69,7 @@ try {
         <!-- COLONNE GAUCHE : VISUEL ET BADGES -->
         <div class="product-gallery">
             <div class="main-image-wrapper">
-                <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($produit['nom_produit']); ?>" id="mainProductImg">
+                <img src="<?php echo $image_url; ?>" alt="<?php echo htmlspecialchars($produit['nom_produit']); ?>" id="mainProductImg" style="object-fit: cover; width: 100%; max-height: 400px;">
                 <span class="category-badge"><?php echo htmlspecialchars($produit['nom_categorie']); ?></span>
             </div>
             <div class="onapac-stamp-box">
@@ -72,7 +87,14 @@ try {
             
             <div class="meta-row">
                 <span class="meta-item"><i class="fa-solid fa-location-dot"></i> Provenance : <strong><?php echo htmlspecialchars($produit['origine_provenance']); ?></strong></span>
-                <span class="meta-item"><i class="fa-solid fa-award"></i> Grade de Qualité : <strong class="badge-grade"><?php echo htmlspecialchars($produit['grade_qualite'] ?? 'Standard'); ?></strong></span>
+                <span class="meta-item"><i class="fa-solid fa-award"></i> Grade de Qualité : 
+                    <strong class="badge-grade">
+                        <?php 
+                            $grade = $produit['grade_qualite'] ?? '';
+                            echo (!empty($grade) && strpos($grade, 'uploads/') === false) ? htmlspecialchars($grade) : 'Standard'; 
+                        ?>
+                    </strong>
+                </span>
             </div>
 
             <div class="price-container">
@@ -128,7 +150,7 @@ try {
         </div>
 
         <div class="tabs-content">
-            <!-- Onglet 1 : Rapport d'analyse fictif mais réaliste basé sur la BDD -->
+            <!-- Onglet 1 : Rapport d'analyse fictif basé sur la BDD -->
             <div class="tab-panel active" id="rapport">
                 <div class="lab-report-wrapper">
                     <h3><i class="fa-solid fa-microscope"></i> Fiche d'Expertise de Laboratoire (ONAPAC)</h3>
@@ -137,7 +159,7 @@ try {
                     <div class="report-table">
                         <div class="report-row">
                             <span class="report-label">Taux d'humidité</span>
-                            <span class="report-value"><strong>11.5%</strong> (Conforme aux normes < 12.5%)</span>
+                            <span class="report-value"><strong>11.5%</strong> (Conforme aux normes &lt; 12.5%)</span>
                         </div>
                         <div class="report-row">
                             <span class="report-label">Matières étrangères (Impuretés)</span>
